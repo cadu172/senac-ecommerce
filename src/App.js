@@ -1,25 +1,21 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {GlobalStyle,MenuEsquerda,ItemMenuEsquerda} from './styles'; // css global
+import AppRoutes from './AppRoutes'; // rotas da aplicação
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      {/* INJETAR CSS DE FORMA GLOBAL */}
+      <GlobalStyle/>      
+      {/* MENU LATERAL ESQUERDO */}
+      <MenuEsquerda>
+            <ItemMenuEsquerda href="https://www.google.com">Google</ItemMenuEsquerda>
+            <ItemMenuEsquerda href="https://www.google.com">Microsoft</ItemMenuEsquerda>
+            <ItemMenuEsquerda href="https://www.google.com">IBM</ItemMenuEsquerda>
+      </MenuEsquerda>
+      {/* ROTAS DA APLICAÇÃO */}
+      <AppRoutes/>
+    </React.Fragment>
   );
 }
 
