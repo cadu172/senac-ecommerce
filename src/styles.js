@@ -30,7 +30,8 @@ export const GlobalStyle = createGlobalStyle`
 //teste
 export const Container = styled.div`
     width: 100%;    
-    background-color: red;
+    background-color: none;
+    text-align: left;
 `;
 
 //menu de navegação lateral com os itens do site

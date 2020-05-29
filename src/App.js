@@ -9,9 +9,9 @@ function App() {
       <GlobalStyle/>      
       {/* MENU LATERAL ESQUERDO */}
       <MenuEsquerda>
-            <ItemMenuEsquerda href="https://www.google.com">Google</ItemMenuEsquerda>
-            <ItemMenuEsquerda href="https://www.google.com">Microsoft</ItemMenuEsquerda>
-            <ItemMenuEsquerda href="https://www.google.com">IBM</ItemMenuEsquerda>
+            <ItemMenuEsquerda href="/Produto">Produto</ItemMenuEsquerda>
+            <ItemMenuEsquerda href="/Listagem">Listagem</ItemMenuEsquerda>
+            <ItemMenuEsquerda href="/Sair">Sair</ItemMenuEsquerda>
       </MenuEsquerda>
       {/* ROTAS DA APLICAÇÃO */}
       <AppRoutes/>
