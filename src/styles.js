@@ -25,6 +25,26 @@ export const GlobalStyle = createGlobalStyle`
         background-image: url('./imagens/bgloginsac.jpg');
         background-size: cover;
     }
+
+    table {
+        border: 1px solid #000;
+        width: 700px;
+        padding: 0px;
+        background-color: #fff;
+    }
+
+    table tr td {
+        border: 1px solid #000;        
+        padding: 5px;
+    }
+
+    table tbody tr:nth-child(odd){
+        border: 1px solid #000;
+        background-color: #c0c0c0;
+        padding: 5px;
+
+    }
+
 `;
 
 //teste

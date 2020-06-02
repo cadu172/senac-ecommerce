@@ -27,7 +27,7 @@ function Listagem() {
                     </tr>
                 </thead>
                 <tbody>
-                {arrayListProduto.map(
+                {arrayListProduto && arrayListProduto.map(
                     (prod)=>(
                             <tr key={prod.sku}>
                                 <td>{prod.nome}</td>

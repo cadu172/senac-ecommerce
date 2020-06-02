@@ -7,12 +7,15 @@ import {Container,
 
 import AlertaSimples from '../Alerta/AlertaSimples';
 
+import api from '../Services/ApiSenac';
+
 export default function FrmCadastroProduto() {
 
     const ref = useRef(null);
     
     const produtoVazio = {
-        sku: "",
+        //sku: "",
+        id: "",        
         nome: "",
         descricao: "",
         preco: 0,
@@ -37,9 +40,15 @@ export default function FrmCadastroProduto() {
     // obtem a lista atual de produtos cadastrados no local storage
     useEffect(()=>{
         // converte em array
-        var listaAtual = JSON.parse(localStorage.getItem('@senac-ecommerce'));        
+        /*var listaAtual = JSON.parse(localStorage.getItem('@senac-ecommerce'));        
         // setar array
-        setListaProduto(listaAtual);            
+        if( Array.isArray(listaAtual) ){
+            setListaProduto(listaAtual);
+        }
+        else {
+            setListaProduto([]);
+        }*/
+        // $$$$ BUSCA PELO LOCALSTORAGE DESATIVADA MOMENTANEAMENTE
     },[]);
 
     // evento de alteração do campo
@@ -58,10 +67,59 @@ export default function FrmCadastroProduto() {
      */
     const sku_estaCadastrado = useCallback(()=>{
         //achei em: https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/find
-        if ( arrayListProduto.find((o)=>o.sku===produto.sku)===undefined )
+        //if ( arrayListProduto.find((o)=>o.sku===produto.sku)===undefined )
+
+        /*if ( Array.isArray(arrayListProduto) )
+        {
+            if ( arrayListProduto.find((o)=>o.sku===produto.sku)===undefined )
+            return false;
+        }
+        else
+        return false;        
+        return true;*/
+
+        const getProduto = async () => {
+            try
+            {
+                return await api.get('senac/' + produto.id);
+            }
+            catch (ex)
+            {
+                console.log(ex);
+            }
+        }
+
+        var resultado = getProduto();
+
+        if ( resultado.status === 200 )
+            return true
+        else
         return false;
-        return true;
-    },[arrayListProduto,produto]);
+
+        /////// mudar a verificação da gravação depois, retirar do evento on_blur
+        
+
+    },[produto]);
+    //},[arrayListProduto,produto]);
+
+    const gravarNaAPI = useCallback(()=>{
+
+        // aqui zera as mensagens de erro
+        setMessageAlerta(null);        
+
+        // envia requisição para API
+        api.post('senac',produto)
+        .then(resposta => {
+            setMessageAlerta({tipo:"Success", descricao:"Produto Registrado com Sucesso"});
+            //history.push("/Listagem");
+            console.log(resposta.data); // imprimie o retorno no console
+        })
+        .catch(erro => {
+            console.log(erro); // imprimie o retorno no console
+            setMessageAlerta({tipo:"Error", descricao: erro.response.status + ' - ' + erro.response.statusText});            
+        })        
+
+    },[produto]);    
 
     // função para adicionar no array atual
     const addItem = useCallback(()=>{        
@@ -92,8 +150,18 @@ export default function FrmCadastroProduto() {
         else
         {
             
-            // incluir
-            arrayListProduto.push(produto);
+            /*if (Array.isArray(arrayListProduto)){
+                // incluir
+                arrayListProduto.push(produto); //**** aqui grava na localStorage
+            }
+            else
+            {   
+                setListaProduto([]);
+                arrayListProduto.push(produto);
+            }*/
+
+            // alterado para gravar na API
+            gravarNaAPI();
 
             // retorna verdadeiro
             return true;
@@ -103,17 +171,20 @@ export default function FrmCadastroProduto() {
         return false;
 
         //dependencias da função
-    },[ arrayListProduto,
-        produto,
-        sku_estaCadastrado]);
+    //},[produto,gravarNaAPI,sku_estaCadastrado,arrayListProduto]);
+
+    },[produto,
+        sku_estaCadastrado,gravarNaAPI]);
 
     // rotina de gravação
     const gravarLocalStorage = useCallback((p_Form)=>{
         
         p_Form.preventDefault();        
 
+        addItem(); // alterado para gravar na API
+
         // gravando no localStorage
-        if ( addItem() )
+        /*if ( addItem() )
         {
             
             try
@@ -130,11 +201,11 @@ export default function FrmCadastroProduto() {
                 setMessageAlerta({tipo:"Error", descricao: err.message})
             }
             
-        }
-        
+        }  */      
         
 
-    },[addItem,arrayListProduto]);
+    //},[addItem,arrayListProduto]);
+    },[addItem]);
 
 
     const handlerSKU_OnBlur = useCallback(()=>{
@@ -156,9 +227,9 @@ export default function FrmCadastroProduto() {
                 <LabelLEFT>SKU</LabelLEFT>
                 <InputEdit 
                     ref={ref}
-                    name="sku"
-                    value={produto.sku}
-                    id="sku"
+                    name="id"
+                    value={produto.id}
+                    id="id"
                     onChange={handlerChange}
                     onBlur={handlerSKU_OnBlur}
                     />                

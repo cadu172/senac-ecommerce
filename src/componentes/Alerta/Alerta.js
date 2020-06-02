@@ -18,7 +18,10 @@ export default function Alerta({param_Tipo, param_Texto}) {
                          <input type="button"
                               name="BtnCloseModal"
                               id="BtnCloseModal"
-                              value="OK"                         
+                              value="OK"  
+
+                              //--- colocar um parametros de callback neste componente
+                              //--- criar uma funcao callback pra zerar a mensagem e fechar a janela                       
                               />
                     </footer>
                </div>
